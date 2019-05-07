@@ -5,8 +5,8 @@ class Moves:
     RIGHT = 'R'
     LEFT = 'L'
 
-    FORWARD = 1
-    BACKWARD = 0
+    FORWARD = 'F'
+    BACKWARD = 'B'
 
 
 class DCMotor:
