@@ -17,7 +17,7 @@ class DCMotor:
         self._stby.on()
 
     def move(self, direction, motor, speed=None):
-        if speed is not None:
+        if speed is not None and 100 >= speed >= 0:
             speed = self.__map_value(speed, 0, 100, 0, 1023)
         if motor == Moves.RIGHT:
             motor = self._right
