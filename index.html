@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="Control DC Motor" name="description">
+    <meta content="Pedro Neto" name="author">
+    <link href="../../../../favicon.ico" rel="icon">
+    <title>DCMotor Control</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .buttons-content {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .checkbox {
+            font-weight: 400;
+        }
+
+        .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            z-index: 2;
+        }
+
+        input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+    </style>
+</head>
+<body class="text-center">
+<div class="buttons-content">
+    <div class="row">
+        <div class="col-md-12" id="alert">
+        </div>
+        <div class="col-md-12">
+            <div class="btn-group-vertical">
+                <button class="btn btn-info btn-lg" id="forward"><i class="fas fa-arrow-up"></i></button>
+                <div class="btn-group">
+                    <button class="btn btn-info btn-lg" id="left"><i class="fas fa-arrow-left"></i></button>
+                    <button class="btn btn-info btn-lg" id="stop"><i class="far fa-stop-circle"></i></button>
+                    <button class="btn btn-info btn-lg" id="right"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <button class="btn btn-info btn-lg" id="backward"><i class="fas fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="speed">Velocidade: 0%</label>
+            <input class="form-control-range" id="speed" max="100" min="0" name="speed" type="range" value="0">
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script crossorigin="anonymous" defer
+        integrity="sha384-+2/MEhV42Ne5nONkjLVCZFGh5IaEQmfXyvGlsibBiATelTFbVGoLB1sqhczi0hlf"
+        src="https://use.fontawesome.com/releases/v5.8.2/js/solid.js"></script>
+<script crossorigin="anonymous" defer
+        integrity="sha384-iFYyWQkY/Zvsdq3IIxRJI2FBoXPj6g73ok7rIH3sZGulA7E5PvFqB5BOELomUuyh"
+        src="https://use.fontawesome.com/releases/v5.8.2/js/regular.js"></script>
+<script crossorigin="anonymous" defer
+        integrity="sha384-Ia7KZbX22R7DDSbxNmxHqPQ15ceNzg2U4h5A8dy3K47G2fV1k658BTxXjp7rdhXa"
+        src="https://use.fontawesome.com/releases/v5.8.2/js/fontawesome.js"></script>
+<script>
+    $(document).ready(function () {
+        let speed = 0;
+        $("input[name='speed']").change(function () {
+            $("label[for='speed']").text("Velocidade: " + this.value + "%");
+            speed = this.value;
+        });
+        $('button').click(function () {
+            $.ajax({
+                url: "http://" + window.location.hostname,
+                beforeSend: function (xhr) {
+                    if (xhr.overrideMimeType) {
+                        xhr.overrideMimeType("application/json");
+                    }
+                },
+                dataType: "json",
+                data: {
+                    'movement': this.id,
+                    'speed': speed
+                }
+            }).done(function (response) {
+                console.log(response);
+                if (response.status) {
+                    const alert_div = "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\">\n" +
+                        response.status +
+                        "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
+                        "    <span aria-hidden=\"true\">&times;</span>\n" +
+                        "  </button>\n" +
+                        "</div>";
+                    $("#alert").append(alert_div);
+                }
+            });
+        })
+    })
+
+</script>
+</body>
+</html>
