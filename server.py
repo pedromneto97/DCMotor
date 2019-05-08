@@ -2,9 +2,13 @@ import socket
 
 import ujson
 
+from DCMotor import DCMotor, Moves
+
 CONTENT = ""
 with open('index.html') as f:
     CONTENT = f.read()
+
+motors = DCMotor()
 
 
 def start(sta):
@@ -42,6 +46,23 @@ def start(sta):
                 d = {key: value for (key, value) in [x.split('=') for x in params.split('&')]}
                 client_stream.write(ujson.dumps({"status": "Sucesso! Movimentando"}))
                 client_stream.close()
+                movement = d.get('movement')
+                speed = d.get('speed')
+                if movement == 'left':
+                    motors.move(Moves.FORWARD, Moves.RIGHT, speed)
+                    motors.stop(Moves.LEFT)
+                elif movement == 'right':
+                    motors.move(Moves.FORWARD, Moves.LEFT, speed)
+                    motors.stop(Moves.RIGHT)
+                elif movement == 'forward':
+                    motors.move(Moves.FORWARD, Moves.RIGHT, speed)
+                    motors.move(Moves.FORWARD, Moves.LEFT, speed)
+                elif movement == 'backward':
+                    motors.move(Moves.BACKWARD, Moves.RIGHT, speed)
+                    motors.move(Moves.BACKWARD, Moves.LEFT, speed)
+                elif movement == 'stop':
+                    motors.stop(Moves.RIGHT)
+                    motors.stop(Moves.LEFT)
             else:
                 client_stream.write(CONTENT)
                 client_stream.close()
