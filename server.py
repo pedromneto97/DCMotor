@@ -11,6 +11,7 @@ def start(sta):
     ip = sta.ifconfig()[0]
     # Web Server
     ai = socket.getaddrinfo(ip, 80)
+    print("Listening to: {}".format(ip))
     addr = ai[0][-1]
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
