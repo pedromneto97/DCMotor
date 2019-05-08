@@ -18,7 +18,7 @@ class DCMotor:
 
     def move(self, direction, motor, speed=None):
         if speed is not None and 100 >= speed >= 0:
-            speed = self.__map_value(speed, 0, 100, 0, 1023)
+            speed = self._map_value(speed, 0, 100, 0, 1023)
         if motor == Moves.RIGHT:
             motor = self._right
         elif motor == Moves.LEFT:
@@ -56,5 +56,5 @@ class DCMotor:
         motor[2].on()
 
     @staticmethod
-    def __map_value(x, in_min, in_max, out_min, out_max):
+    def _map_value(x, in_min, in_max, out_min, out_max):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
