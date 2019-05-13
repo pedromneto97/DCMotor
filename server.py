@@ -47,7 +47,7 @@ def start(sta):
                 client_stream.write(ujson.dumps({"status": "Sucesso! Movimentando"}))
                 client_stream.close()
                 movement = d.get('movement')
-                speed = d.get('speed')
+                speed = int(d.get('speed'))
                 if movement == 'left':
                     motors.move(Moves.FORWARD, Moves.RIGHT, speed)
                     motors.stop(Moves.LEFT)
