@@ -13,6 +13,8 @@ class DCMotor:
     def __init__(self, pwm_a=0, pwm_b=2, ai1=13, ai2=15, bi1=12, bi2=14, stby=16):
         self._right = [PWM(Pin(pwm_a), freq=1000), Pin(ai1, Pin.OUT), Pin(ai2, Pin.OUT)]
         self._left = [PWM(Pin(pwm_b)), Pin(bi1, Pin.OUT), Pin(bi2, Pin.OUT)]
+        self._right[0].freq(1000)
+
         self._stby = Pin(stby, Pin.OUT)
         self._stby.on()
 
